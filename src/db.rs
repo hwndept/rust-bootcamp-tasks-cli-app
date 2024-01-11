@@ -4,7 +4,7 @@ use std::fs;
 use crate::models::{DBState, Epic, Status, Story};
 
 pub struct TasksDatabase {
-    database: Box<dyn Database>,
+    pub database: Box<dyn Database>,
 }
 
 impl TasksDatabase {
@@ -46,7 +46,7 @@ impl TasksDatabase {
 
         self.database.write_db(&db_state)?;
 
-        Ok(db_state.last_item_id)
+        Ok(id)
     }
 
     pub fn delete_epic(&self, epic_id: u32) -> Result<()> {
@@ -124,7 +124,7 @@ impl TasksDatabase {
     }
 }
 
-trait Database {
+pub trait Database {
     fn read_db(&self) -> Result<DBState>;
     fn write_db(&self, db_state: &DBState) -> Result<()>;
 }
@@ -195,7 +195,6 @@ mod tests {
         };
         let epic = Epic::new("".to_owned(), "".to_owned());
 
-        // TODO: fix this error by deriving the appropriate traits for Epic
         let result = db.create_epic(epic.clone());
 
         assert_eq!(result.is_ok(), true);
@@ -236,7 +235,6 @@ mod tests {
 
         let epic_id = result.unwrap();
 
-        // TODO: fix this error by deriving the appropriate traits for Story
         let result = db.create_story(story.clone(), epic_id);
         assert_eq!(result.is_ok(), true);
 
