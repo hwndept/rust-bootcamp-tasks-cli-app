@@ -1,5 +1,5 @@
 [package]
-name = "rust-bootcamp-cli-app"
+name = "rust-bootcamp-tasks-cli-app"
 version = "0.1.0"
 edition = "2021"
 
