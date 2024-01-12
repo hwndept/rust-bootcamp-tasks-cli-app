@@ -108,12 +108,12 @@ impl Navigator {
         Ok(())
     }
 
-    // Private functions used for testing
-
+    #[cfg(test)]
     fn get_page_count(&self) -> usize {
         self.pages.len()
     }
 
+    #[cfg(test)]
     fn set_prompts(&mut self, prompts: Prompts) {
         self.prompts = prompts;
     }

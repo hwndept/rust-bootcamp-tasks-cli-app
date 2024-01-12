@@ -148,6 +148,7 @@ impl Database for JSONFileDatabase {
     }
 }
 
+#[cfg(test)]
 pub mod test_utils {
     use std::{cell::RefCell, collections::HashMap};
 
@@ -245,9 +246,7 @@ mod tests {
 
         assert_eq!(id, expected_id);
         assert_eq!(db_state.last_item_id, expected_id);
-        assert!(
-            db_state.epics.get(&epic_id).unwrap().stories.contains(&id)
-        );
+        assert!(db_state.epics.get(&epic_id).unwrap().stories.contains(&id));
         assert_eq!(db_state.stories.get(&id), Some(&story));
     }
 
@@ -365,14 +364,12 @@ mod tests {
         let expected_last_id = 2;
 
         assert_eq!(db_state.last_item_id, expected_last_id);
-        assert!(
-            !db_state
-                .epics
-                .get(&epic_id)
-                .unwrap()
-                .stories
-                .contains(&story_id)
-        );
+        assert!(!db_state
+            .epics
+            .get(&epic_id)
+            .unwrap()
+            .stories
+            .contains(&story_id));
         assert_eq!(db_state.stories.get(&story_id), None);
     }
 
