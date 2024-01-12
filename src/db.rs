@@ -197,7 +197,7 @@ mod tests {
 
         let result = db.create_epic(epic.clone());
 
-        assert_eq!(result.is_ok(), true);
+        assert!(result.is_ok());
 
         let id = result.unwrap();
         let db_state = db.read_db().unwrap();
@@ -219,7 +219,7 @@ mod tests {
         let non_existent_epic_id = 999;
 
         let result = db.create_story(story, non_existent_epic_id);
-        assert_eq!(result.is_err(), true);
+        assert!(result.is_err());
     }
 
     #[test]
@@ -231,12 +231,12 @@ mod tests {
         let story = Story::new("".to_owned(), "".to_owned());
 
         let result = db.create_epic(epic);
-        assert_eq!(result.is_ok(), true);
+        assert!(result.is_ok());
 
         let epic_id = result.unwrap();
 
         let result = db.create_story(story.clone(), epic_id);
-        assert_eq!(result.is_ok(), true);
+        assert!(result.is_ok());
 
         let id = result.unwrap();
         let db_state = db.read_db().unwrap();
@@ -245,9 +245,8 @@ mod tests {
 
         assert_eq!(id, expected_id);
         assert_eq!(db_state.last_item_id, expected_id);
-        assert_eq!(
-            db_state.epics.get(&epic_id).unwrap().stories.contains(&id),
-            true
+        assert!(
+            db_state.epics.get(&epic_id).unwrap().stories.contains(&id)
         );
         assert_eq!(db_state.stories.get(&id), Some(&story));
     }
@@ -261,7 +260,7 @@ mod tests {
         let non_existent_epic_id = 999;
 
         let result = db.delete_epic(non_existent_epic_id);
-        assert_eq!(result.is_err(), true);
+        assert!(result.is_err());
     }
 
     #[test]
@@ -273,17 +272,17 @@ mod tests {
         let story = Story::new("".to_owned(), "".to_owned());
 
         let result = db.create_epic(epic);
-        assert_eq!(result.is_ok(), true);
+        assert!(result.is_ok());
 
         let epic_id = result.unwrap();
 
         let result = db.create_story(story, epic_id);
-        assert_eq!(result.is_ok(), true);
+        assert!(result.is_ok());
 
         let story_id = result.unwrap();
 
         let result = db.delete_epic(epic_id);
-        assert_eq!(result.is_ok(), true);
+        assert!(result.is_ok());
 
         let db_state = db.read_db().unwrap();
 
@@ -303,19 +302,19 @@ mod tests {
         let story = Story::new("".to_owned(), "".to_owned());
 
         let result = db.create_epic(epic);
-        assert_eq!(result.is_ok(), true);
+        assert!(result.is_ok());
 
         let epic_id = result.unwrap();
 
         let result = db.create_story(story, epic_id);
-        assert_eq!(result.is_ok(), true);
+        assert!(result.is_ok());
 
         let story_id = result.unwrap();
 
         let non_existent_epic_id = 999;
 
         let result = db.delete_story(non_existent_epic_id, story_id);
-        assert_eq!(result.is_err(), true);
+        assert!(result.is_err());
     }
 
     #[test]
@@ -327,17 +326,17 @@ mod tests {
         let story = Story::new("".to_owned(), "".to_owned());
 
         let result = db.create_epic(epic);
-        assert_eq!(result.is_ok(), true);
+        assert!(result.is_ok());
 
         let epic_id = result.unwrap();
 
         let result = db.create_story(story, epic_id);
-        assert_eq!(result.is_ok(), true);
+        assert!(result.is_ok());
 
         let non_existent_story_id = 999;
 
         let result = db.delete_story(epic_id, non_existent_story_id);
-        assert_eq!(result.is_err(), true);
+        assert!(result.is_err());
     }
 
     #[test]
@@ -349,31 +348,30 @@ mod tests {
         let story = Story::new("".to_owned(), "".to_owned());
 
         let result = db.create_epic(epic);
-        assert_eq!(result.is_ok(), true);
+        assert!(result.is_ok());
 
         let epic_id = result.unwrap();
 
         let result = db.create_story(story, epic_id);
-        assert_eq!(result.is_ok(), true);
+        assert!(result.is_ok());
 
         let story_id = result.unwrap();
 
         let result = db.delete_story(epic_id, story_id);
-        assert_eq!(result.is_ok(), true);
+        assert!(result.is_ok());
 
         let db_state = db.read_db().unwrap();
 
         let expected_last_id = 2;
 
         assert_eq!(db_state.last_item_id, expected_last_id);
-        assert_eq!(
-            db_state
+        assert!(
+            !db_state
                 .epics
                 .get(&epic_id)
                 .unwrap()
                 .stories
-                .contains(&story_id),
-            false
+                .contains(&story_id)
         );
         assert_eq!(db_state.stories.get(&story_id), None);
     }
@@ -387,7 +385,7 @@ mod tests {
         let non_existent_epic_id = 999;
 
         let result = db.update_epic_status(non_existent_epic_id, Status::Closed);
-        assert_eq!(result.is_err(), true);
+        assert!(result.is_err());
     }
 
     #[test]
@@ -399,13 +397,13 @@ mod tests {
 
         let result = db.create_epic(epic);
 
-        assert_eq!(result.is_ok(), true);
+        assert!(result.is_ok());
 
         let epic_id = result.unwrap();
 
         let result = db.update_epic_status(epic_id, Status::Closed);
 
-        assert_eq!(result.is_ok(), true);
+        assert!(result.is_ok());
 
         let db_state = db.read_db().unwrap();
 
@@ -421,7 +419,7 @@ mod tests {
         let non_existent_story_id = 999;
 
         let result = db.update_story_status(non_existent_story_id, Status::Closed);
-        assert_eq!(result.is_err(), true);
+        assert!(result.is_err());
     }
 
     #[test]
@@ -442,7 +440,7 @@ mod tests {
 
         let result = db.update_story_status(story_id, Status::Closed);
 
-        assert_eq!(result.is_ok(), true);
+        assert!(result.is_ok());
 
         let db_state = db.read_db().unwrap();
 
@@ -463,7 +461,7 @@ mod tests {
             let db = JSONFileDatabase {
                 file_path: "INVALID_PATH".to_owned(),
             };
-            assert_eq!(db.read_db().is_err(), true);
+            assert!(db.read_db().is_err());
         }
 
         #[test]
@@ -483,7 +481,7 @@ mod tests {
 
             let result = db.read_db();
 
-            assert_eq!(result.is_err(), true);
+            assert!(result.is_err());
         }
 
         #[test]
@@ -503,7 +501,7 @@ mod tests {
 
             let result = db.read_db();
 
-            assert_eq!(result.is_ok(), true);
+            assert!(result.is_ok());
         }
 
         #[test]
@@ -548,7 +546,7 @@ mod tests {
             let write_result = db.write_db(&state);
             let read_result = db.read_db().unwrap();
 
-            assert_eq!(write_result.is_ok(), true);
+            assert!(write_result.is_ok());
             assert_eq!(read_result, state);
         }
     }

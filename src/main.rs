@@ -29,7 +29,7 @@ fn main() {
             } else {
                 let input = get_user_input();
                 let input = input.trim();
-                let action = page.handle_input(&input);
+                let action = page.handle_input(input);
                 if let Ok(Some(action)) = action {
                     navigator.handle_action(action).unwrap();
                 }
